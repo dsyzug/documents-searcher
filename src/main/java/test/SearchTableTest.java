@@ -2,10 +2,9 @@ package test;
 
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Desktop;
-import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -29,8 +28,8 @@ public class SearchTableTest extends JFrame {
     
     private final JTextField searchField;
     
-    private static final int LAYOUT_WIDTH = 1200;
-    private static final int LAYOUT_HEIGHT = 600;
+    private static final int LAYOUT_WIDTH = 1600;
+    private static final int LAYOUT_HEIGHT = 400;
 
     public static void main(String[] args) throws Exception {
         SearchTableTest stt = new SearchTableTest();
@@ -44,7 +43,7 @@ public class SearchTableTest extends JFrame {
     public SearchTableTest() throws Exception {
         Container pane = getContentPane();
         pane.setLayout(new BorderLayout());
-        searchField = new javax.swing.JTextField();
+        searchField = new JTextField();
         setSearchFieldProperties();
         
         searchTableModel = new SearchTableModel();
@@ -62,6 +61,7 @@ public class SearchTableTest extends JFrame {
 
     private void setSearchFieldProperties() {
         searchField.setToolTipText("Search Anything");
+        searchField.setMargin(new Insets(5, 5, 5, 5));
         //searchField.setHorizontalAlignment(JTextField.LEFT);
         searchField.addKeyListener(new KeyListener() {
             @Override
@@ -104,9 +104,8 @@ public class SearchTableTest extends JFrame {
             }
         });
         
-        jTable.getColumnModel().getColumn(0).setPreferredWidth(400);
-        jTable.getColumnModel().getColumn(1).setPreferredWidth(800);
-        jTable.getColumnModel().getColumn(2).setPreferredWidth(150);
+        jTable.getColumnModel().getColumn(0).setPreferredWidth((int) (LAYOUT_WIDTH * 0.3));
+        jTable.getColumnModel().getColumn(1).setPreferredWidth((int) (LAYOUT_WIDTH * 0.6));
     }
 
 }
