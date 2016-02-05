@@ -1,12 +1,10 @@
 package helpers;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -29,14 +27,14 @@ public class SearchFiles {
     public static void main(String[] args) throws ParseException, IOException {
         
         Date start = new Date();
-        queryIndex("2014");
+        System.out.println(queryIndex("java"));
         Date end = new Date();
         System.out.println("#############################################################");
         System.out.println("Total Time Taken: " + (end.getTime() - start.getTime()) + "ms");
         System.out.println("#############################################################");
     }
 
-    public static void queryIndex(String line) throws ParseException, IOException {
+    public static List<SearchDoc>  queryIndex(String line) throws ParseException, IOException {
 
         try (IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(IndexFiles.INDEX_PATH)))) {
             IndexSearcher searcher = new IndexSearcher(reader);
@@ -47,13 +45,12 @@ public class SearchFiles {
             Query query = parser.parse(line.trim());
 
             System.out.println("Searching for: " + query.toString(field));
-            searcher.search(query, 100);
 
-            doPagingSearch(searcher, query);
+            return doPagingSearch(searcher, query);
         }
     }
 
-    public static void doPagingSearch(IndexSearcher searcher, Query query) throws IOException {
+    public static List<SearchDoc> doPagingSearch(IndexSearcher searcher, Query query) throws IOException {
         // Collect enough docs to show 5 pages
         TopDocs results = searcher.search(query, 50); // get atmost 50 results
         ScoreDoc[] hits = results.scoreDocs;
@@ -61,14 +58,13 @@ public class SearchFiles {
         int numTotalHits = results.totalHits;
         System.out.println(numTotalHits + " total matching documents");
         int start = 0;
-        int end = Math.min(numTotalHits, 10);
+        int end = Math.min(numTotalHits, 100);
+        
+        List<SearchDoc> docsList = new ArrayList<>(end);
         for (int i = start; i < end; i++) {
-            System.out.println("===============================================");
             Document doc = searcher.doc(hits[i].doc);
-            System.out.println("Name: " + doc.get("name"));
-            System.out.println("Path: " + doc.get("path"));
-            System.out.println("Modified: " + doc.get("modified"));
+            docsList.add(new SearchDoc(doc.get("name"), doc.get("path")));
         }
-
+        return docsList;
     }
 }
