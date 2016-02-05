@@ -10,4 +10,5 @@ This index can later be used to quickly search any file by typing few characters
 How to build:
 From command line execute the following:
 
-mvn clean compile assembly:single
+mvn package
+
