@@ -1,4 +1,4 @@
-# searchmypc
+# searchmypc (work in progress)
 
 This is a Java Applications built using Java swing, awt, and Apache Lucene search library. Purpose of this application is
 to give everything search engine like behavior on Linux Machines.
