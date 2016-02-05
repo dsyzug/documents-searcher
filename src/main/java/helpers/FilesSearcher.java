@@ -3,7 +3,6 @@ package helpers;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.lucene.analysis.Analyzer;
@@ -24,24 +23,40 @@ import org.apache.lucene.store.FSDirectory;
  */
 public class FilesSearcher {
     
+    private IndexReader reader;
+    private IndexSearcher indexSearcher;
+    private Analyzer analyzer;
+    private QueryParser queryParser;
+
+    public FilesSearcher() {
+        initVars();
+    }
     
-
-    public static List<SearchDoc>  queryIndex(String line) throws ParseException, IOException {
-
-        try (IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(SearchDoc.DEFAULT_INDEX_PATH)))) {
-            IndexSearcher searcher = new IndexSearcher(reader);
-            Analyzer analyzer = new StandardAnalyzer();
-
-            QueryParser parser = new QueryParser(SearchDoc.FIELD_STR_FILE_NAME, analyzer);
-            Query query = parser.parse(line.trim());
-
-            System.out.println("Searching for: " + query.toString(SearchDoc.FIELD_STR_FILE_NAME));
-
-            return doPagingSearch(searcher, query);
+    private void initVars() {
+        try {
+            reader = DirectoryReader.open(FSDirectory.open(Paths.get(SearchDoc.DEFAULT_INDEX_PATH)));
+            indexSearcher = new IndexSearcher(reader);
+            analyzer = new StandardAnalyzer();
+            queryParser = new QueryParser(SearchDoc.FIELD_STR_FILE_NAME, analyzer);
+        } catch (Exception e) {
+            System.out.println(e.getStackTrace());
         }
+
+    }
+    
+    public List<SearchDoc> queryIndex(String line) {
+        try {
+            Query query = queryParser.parse(line.trim());
+            System.out.println("Searching for: " + query.toString(SearchDoc.FIELD_STR_FILE_NAME));
+            return doPagingSearch(indexSearcher, query);
+        } catch (Exception e) {
+            System.out.println(e.getStackTrace());
+        }
+
+        return null;
     }
 
-    public static List<SearchDoc> doPagingSearch(IndexSearcher searcher, Query query) throws IOException {
+    public List<SearchDoc> doPagingSearch(IndexSearcher searcher, Query query) throws IOException {
         // Collect enough docs to show 5 pages
         TopDocs results = searcher.search(query, 50); // get atmost 50 results
         ScoreDoc[] hits = results.scoreDocs;

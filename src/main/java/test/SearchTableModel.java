@@ -10,17 +10,19 @@ import org.apache.lucene.queryparser.classic.ParseException;
 
 public class SearchTableModel extends AbstractTableModel {
     
-    List<SearchDoc> searchDocs;
+    private List<SearchDoc> searchDocs;
+    private final FilesSearcher filesSearcher;
     
     public SearchTableModel(){
         searchDocs = new ArrayList<>();
+        filesSearcher = new FilesSearcher();
     }
     
     public void updateDocsList(String query) throws ParseException, IOException{
         if(query.trim().equals("")){
             return;
         }
-        searchDocs = FilesSearcher.queryIndex(query);
+        searchDocs = filesSearcher.queryIndex(query);
     }
 
     @Override

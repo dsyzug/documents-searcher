@@ -17,7 +17,7 @@ public class SearchTableTest extends JFrame {
     public static void main(String[] args) throws Exception {
         SearchTableTest stt = new SearchTableTest();
         stt.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        stt.setSize(1000, 600);
+        stt.setSize(1200, 600);
         stt.setVisible(true);
     }
 
@@ -27,9 +27,8 @@ public class SearchTableTest extends JFrame {
         
         searchField = new javax.swing.JTextField();
         searchField.setToolTipText("Search Anything");
-        searchField.setHorizontalAlignment(JTextField.LEFT);
+        //searchField.setHorizontalAlignment(JTextField.LEFT);
         searchField.addKeyListener(new KeyListener() {
-
             @Override
             public void keyReleased(KeyEvent e) {
                 try {
