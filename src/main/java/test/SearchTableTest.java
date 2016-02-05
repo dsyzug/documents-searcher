@@ -7,12 +7,12 @@ import javax.swing.*;
 
 public class SearchTableTest extends JFrame {
 
-    private JTable table;
-    private SearchTableModel searchTableModel;
+    private final JTable table;
+    private final SearchTableModel searchTableModel;
     
     // Variables declaration - do not modify                     
-    private javax.swing.JButton searchButton;
-    private javax.swing.JTextField searchField;
+    private final javax.swing.JButton searchButton;
+    private final javax.swing.JTextField searchField;
 
     public static void main(String[] args) throws Exception {
         SearchTableTest stt = new SearchTableTest();

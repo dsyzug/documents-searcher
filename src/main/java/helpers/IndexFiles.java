@@ -14,18 +14,13 @@ import org.apache.lucene.index.Term;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Date;
 
 /**
  * Index all text files under a directory.
@@ -35,21 +30,17 @@ import java.util.Date;
  */
 public class IndexFiles {
     
-    public static final String DOCS_PATH = "/home/dhirendra/Documents/googledrive/books/PROGRAMMING/JAVA";
-    public static final String INDEX_PATH = "/home/dhirendra/workspace/learn/java/lucene/bookindex";
-    
     public static void main(String[] args) {
-        createUpdateIndex(DOCS_PATH, INDEX_PATH, true);
+        createOrUpdateIndex(SearchDoc.DEFAULT_DOCS_PATH, SearchDoc.DEFAULT_INDEX_PATH, true);
     }
 
-    public static boolean createUpdateIndex(String docsPath, String indexPath, boolean create) {
+    public static boolean createOrUpdateIndex(String docsPath, String indexPath, boolean create) {
         final Path docDir = Paths.get(docsPath);
         if (!Files.isReadable(docDir)) {
             System.out.println("Document directory '" + docDir.toAbsolutePath() + "' does not exist or is not readable.");
             System.exit(1);
         }
         System.out.println("Indexing to directory '" + indexPath + "'...");
-        Date start = new Date();
         
         try {
             Directory dir = FSDirectory.open(Paths.get(indexPath));
@@ -65,9 +56,6 @@ public class IndexFiles {
             try (IndexWriter writer = new IndexWriter(dir, iwc)) {
                 indexDocs(writer, docDir);
             }
-            
-            Date end = new Date();
-            System.out.println(end.getTime() - start.getTime() + " total milliseconds");
             return true;
         } catch (IOException e) {
             System.out.println(" caught a " + e.getClass() + "\n with message: " + e.getMessage());
@@ -107,25 +95,17 @@ public class IndexFiles {
      * Indexes a single document
      */
     static void indexDoc(IndexWriter writer, Path file, long lastModified) throws IOException {
-        try (InputStream stream = Files.newInputStream(file)) {
-            // make a new, empty document
-            Document doc = new Document();
-            
-            Field pathField = new StringField("path", file.toString(), Field.Store.YES);
-            doc.add(pathField);
+        Document doc = new Document();
+        
+        doc.add(new TextField(SearchDoc.FIELD_STR_FILE_NAME, file.getFileName().toString(), Field.Store.YES));
+        doc.add(new StringField(SearchDoc.FIELD_STR_FILE_PATH, file.toString(), Field.Store.YES));
+        doc.add(new LongField(SearchDoc.FIELD_LONG_FILE_MODIFIED, lastModified, Field.Store.YES));
 
-            doc.add(new TextField("name", file.getFileName().toString(), Field.Store.YES));
-
-            doc.add(new LongField("modified", lastModified, Field.Store.YES));
-
-            if (writer.getConfig().getOpenMode() == OpenMode.CREATE) {
-                // New index, so we just add the document (no old document can be there):
-                System.out.println("adding " + file);
-                writer.addDocument(doc);
-            } else {
-                System.out.println("updating " + file);
-                writer.updateDocument(new Term("path", file.toString()), doc);
-            }
+        if (writer.getConfig().getOpenMode() == OpenMode.CREATE) {
+            System.out.println("adding " + file);
+            writer.addDocument(doc);
+        } else {
+            writer.updateDocument(new Term(SearchDoc.FIELD_STR_FILE_PATH, file.toString()), doc);
         }
     }
 }

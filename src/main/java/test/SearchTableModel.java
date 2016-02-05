@@ -22,8 +22,6 @@ public class SearchTableModel extends AbstractTableModel {
         }
         searchDocs = SearchFiles.queryIndex(query);
     }
-    
-    
 
     @Override
     public int getRowCount() {
@@ -37,10 +35,7 @@ public class SearchTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int row, int column) {
-        if(column == 0 ){
-            return searchDocs.get(row).getFileName();
-        } 
-        return searchDocs.get(row).getFilePath();
+        return searchDocs.get(row).getFileData(column);
     }
 
     @Override

@@ -36,15 +36,14 @@ public class SearchFiles {
 
     public static List<SearchDoc>  queryIndex(String line) throws ParseException, IOException {
 
-        try (IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(IndexFiles.INDEX_PATH)))) {
+        try (IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(SearchDoc.DEFAULT_INDEX_PATH)))) {
             IndexSearcher searcher = new IndexSearcher(reader);
             Analyzer analyzer = new StandardAnalyzer();
 
-            String field = "name";
-            QueryParser parser = new QueryParser(field, analyzer);
+            QueryParser parser = new QueryParser(SearchDoc.FIELD_STR_FILE_NAME, analyzer);
             Query query = parser.parse(line.trim());
 
-            System.out.println("Searching for: " + query.toString(field));
+            System.out.println("Searching for: " + query.toString(SearchDoc.FIELD_STR_FILE_NAME));
 
             return doPagingSearch(searcher, query);
         }
@@ -63,7 +62,10 @@ public class SearchFiles {
         List<SearchDoc> docsList = new ArrayList<>(end);
         for (int i = start; i < end; i++) {
             Document doc = searcher.doc(hits[i].doc);
-            docsList.add(new SearchDoc(doc.get("name"), doc.get("path")));
+            docsList.add(new SearchDoc(
+                    doc.get(SearchDoc.FIELD_STR_FILE_NAME), 
+                    doc.get(SearchDoc.FIELD_STR_FILE_PATH), 
+                    Long.parseLong(doc.get(SearchDoc.FIELD_LONG_FILE_MODIFIED))));
         }
         return docsList;
     }
