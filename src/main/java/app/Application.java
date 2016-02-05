@@ -22,22 +22,22 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-public class Main extends JFrame {
+public class Application extends JFrame {
 
     private final JTable jTable;
     private final FileSearchModel searchTableModel;
     private final JTextField searchField;
 
     public static void main(String[] args) throws Exception {
-        Main stt = new Main();
-        stt.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Application app = new Application();
+        app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //stt.setSize(LAYOUT_WIDTH, LAYOUT_HEIGHT);
-        stt.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        app.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        stt.setVisible(true);
+        app.setVisible(true);
     }
 
-    public Main() throws Exception {
+    public Application() throws Exception {
         Container pane = getContentPane();
         pane.setLayout(new BorderLayout());
         searchField = new JTextField();
@@ -66,7 +66,7 @@ public class Main extends JFrame {
                 try {
                     doSearch();
                 } catch (Exception ex) {
-                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
 
@@ -101,7 +101,7 @@ public class Main extends JFrame {
                     try {
                         Desktop.getDesktop().open(new File(table.getValueAt(row, 1).toString()));
                     } catch (IOException ex) {
-                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
