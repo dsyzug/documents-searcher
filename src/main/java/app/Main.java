@@ -1,6 +1,6 @@
-package test;
+package app;
 
-
+import helpers.FileSearchModel;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Desktop;
@@ -21,10 +21,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-public class SearchTableTest extends JFrame {
+public class Main extends JFrame {
 
     private final JTable jTable;
-    private final SearchTableModel searchTableModel;
+    private final FileSearchModel searchTableModel;
     
     private final JTextField searchField;
     
@@ -32,7 +32,7 @@ public class SearchTableTest extends JFrame {
     private static final int LAYOUT_HEIGHT = 400;
 
     public static void main(String[] args) throws Exception {
-        SearchTableTest stt = new SearchTableTest();
+        Main stt = new Main();
         stt.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         stt.setSize(LAYOUT_WIDTH, LAYOUT_HEIGHT);
         //stt.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -40,13 +40,13 @@ public class SearchTableTest extends JFrame {
         stt.setVisible(true);
     }
 
-    public SearchTableTest() throws Exception {
+    public Main() throws Exception {
         Container pane = getContentPane();
         pane.setLayout(new BorderLayout());
         searchField = new JTextField();
         setSearchFieldProperties();
         
-        searchTableModel = new SearchTableModel();
+        searchTableModel = new FileSearchModel();
         jTable = new JTable(searchTableModel);
         setJTableProperties();
         
@@ -69,7 +69,7 @@ public class SearchTableTest extends JFrame {
                 try {
                     doSearch();
                 } catch (Exception ex) {
-                    Logger.getLogger(SearchTableTest.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                 }     
             }
 
@@ -98,7 +98,7 @@ public class SearchTableTest extends JFrame {
                     try {
                         Desktop.getDesktop().open(new File(table.getValueAt(row, 1).toString()         ));
                     } catch (IOException ex) {
-                        Logger.getLogger(SearchTableTest.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }

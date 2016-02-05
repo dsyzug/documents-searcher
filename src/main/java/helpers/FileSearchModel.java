@@ -1,4 +1,4 @@
-package test;
+package helpers;
 
 import helpers.SearchDoc;
 import helpers.FilesSearcher;
@@ -8,12 +8,12 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import org.apache.lucene.queryparser.classic.ParseException;
 
-public class SearchTableModel extends AbstractTableModel {
+public class FileSearchModel extends AbstractTableModel {
     
     private List<SearchDoc> searchDocs;
     private final FilesSearcher filesSearcher;
     
-    public SearchTableModel(){
+    public FileSearchModel(){
         searchDocs = new ArrayList<>();
         filesSearcher = new FilesSearcher();
     }
