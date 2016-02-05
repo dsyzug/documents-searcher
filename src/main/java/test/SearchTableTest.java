@@ -46,9 +46,8 @@ public class SearchTableTest extends JFrame {
         pane.add(searchField, BorderLayout.NORTH);
         pane.add(searchButton, BorderLayout.EAST);
         
-        searchTableModel = new SearchTableModel("*:*");
+        searchTableModel = new SearchTableModel();
         table = new JTable(searchTableModel);
-        // pane.add(table, BorderLayout.CENTER);
         JScrollPane jsp = new JScrollPane(table);
         pane.add(jsp,BorderLayout.SOUTH);
     }

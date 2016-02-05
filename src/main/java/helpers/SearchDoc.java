@@ -6,6 +6,7 @@ public class SearchDoc {
     private final String filePath;
     
     public static final int NUM_FIELDS = 2;
+    public static final String[] COLUMN_NAMES = {"File Name", "File Path"};
 
     public SearchDoc(String fileName, String filePath) {
         this.fileName = fileName;
