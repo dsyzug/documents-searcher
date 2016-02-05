@@ -2,9 +2,17 @@ package test;
 
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
+import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,26 +20,47 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 
 public class SearchTableTest extends JFrame {
 
     private final JTable jTable;
     private final SearchTableModel searchTableModel;
     
-    private final javax.swing.JTextField searchField;
+    private final JTextField searchField;
+    
+    private static final int LAYOUT_WIDTH = 1200;
+    private static final int LAYOUT_HEIGHT = 600;
 
     public static void main(String[] args) throws Exception {
         SearchTableTest stt = new SearchTableTest();
         stt.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        stt.setSize(1200, 600);
+        stt.setSize(LAYOUT_WIDTH, LAYOUT_HEIGHT);
+        //stt.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        
         stt.setVisible(true);
     }
 
     public SearchTableTest() throws Exception {
         Container pane = getContentPane();
         pane.setLayout(new BorderLayout());
-        
         searchField = new javax.swing.JTextField();
+        setSearchFieldProperties();
+        
+        searchTableModel = new SearchTableModel();
+        jTable = new JTable(searchTableModel);
+        setJTableProperties();
+        
+        pane.add(searchField, BorderLayout.NORTH);
+        pane.add(new JScrollPane(jTable),BorderLayout.CENTER);
+    }
+    
+    private void doSearch() throws Exception {
+        searchTableModel.updateDocsList(searchField.getText());
+        searchTableModel.fireTableDataChanged();
+    } 
+
+    private void setSearchFieldProperties() {
         searchField.setToolTipText("Search Anything");
         //searchField.setHorizontalAlignment(JTextField.LEFT);
         searchField.addKeyListener(new KeyListener() {
@@ -54,18 +83,30 @@ public class SearchTableTest extends JFrame {
 
             }
         });
-        
-        pane.add(searchField, BorderLayout.NORTH);
-        
-        searchTableModel = new SearchTableModel();
-        jTable = new JTable(searchTableModel);
-        JScrollPane jsp = new JScrollPane(jTable);
-        pane.add(jsp,BorderLayout.CENTER);
     }
-    
-    private void doSearch() throws Exception {
-        searchTableModel.updateDocsList(searchField.getText());
-        searchTableModel.fireTableDataChanged();
-    } 
+
+    private void setJTableProperties() {
+        jTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent me) {
+                JTable table = (JTable) me.getSource();
+                Point p = me.getPoint();
+                int row = table.rowAtPoint(p);
+                if (me.getClickCount() == 2) {
+                    
+                    System.out.println("val" +table.getValueAt(row, 1));
+                    try {
+                        Desktop.getDesktop().open(new File(table.getValueAt(row, 1).toString()         ));
+                    } catch (IOException ex) {
+                        Logger.getLogger(SearchTableTest.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        });
+        
+        jTable.getColumnModel().getColumn(0).setPreferredWidth(400);
+        jTable.getColumnModel().getColumn(1).setPreferredWidth(800);
+        jTable.getColumnModel().getColumn(2).setPreferredWidth(150);
+    }
 
 }
