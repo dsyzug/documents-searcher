@@ -22,17 +22,9 @@ import org.apache.lucene.store.FSDirectory;
 /**
  * Simple command-line based search demo.
  */
-public class SearchFiles {
-
-    public static void main(String[] args) throws ParseException, IOException {
-        
-        Date start = new Date();
-        System.out.println(queryIndex("java"));
-        Date end = new Date();
-        System.out.println("#############################################################");
-        System.out.println("Total Time Taken: " + (end.getTime() - start.getTime()) + "ms");
-        System.out.println("#############################################################");
-    }
+public class FilesSearcher {
+    
+    
 
     public static List<SearchDoc>  queryIndex(String line) throws ParseException, IOException {
 

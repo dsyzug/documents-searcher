@@ -1,7 +1,7 @@
 package test;
 
 import helpers.SearchDoc;
-import helpers.SearchFiles;
+import helpers.FilesSearcher;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ public class SearchTableModel extends AbstractTableModel {
         if(query.trim().equals("")){
             return;
         }
-        searchDocs = SearchFiles.queryIndex(query);
+        searchDocs = FilesSearcher.queryIndex(query);
     }
 
     @Override

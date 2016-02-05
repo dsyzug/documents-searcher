@@ -9,7 +9,7 @@ import javax.swing.*;
 
 public class SearchTableTest extends JFrame {
 
-    private final JTable table;
+    private final JTable jTable;
     private final SearchTableModel searchTableModel;
     
     private final javax.swing.JTextField searchField;
@@ -53,8 +53,8 @@ public class SearchTableTest extends JFrame {
         pane.add(searchField, BorderLayout.NORTH);
         
         searchTableModel = new SearchTableModel();
-        table = new JTable(searchTableModel);
-        JScrollPane jsp = new JScrollPane(table);
+        jTable = new JTable(searchTableModel);
+        JScrollPane jsp = new JScrollPane(jTable);
         pane.add(jsp,BorderLayout.SOUTH);
     }
     

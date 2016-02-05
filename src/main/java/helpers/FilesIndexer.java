@@ -28,7 +28,7 @@ import java.nio.file.attribute.BasicFileAttributes;
  * This is a command-line application demonstrating simple Lucene indexing. Run
  * it with no command-line arguments for usage information.
  */
-public class IndexFiles {
+public class FilesIndexer {
     
     public static void main(String[] args) {
         createOrUpdateIndex(SearchDoc.DEFAULT_DOCS_PATH, SearchDoc.DEFAULT_INDEX_PATH, true);
