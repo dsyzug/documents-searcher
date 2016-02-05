@@ -10,7 +10,6 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
@@ -58,7 +57,7 @@ public class FilesSearcher {
 
     public List<SearchDoc> doPagingSearch(IndexSearcher searcher, Query query) throws IOException {
         // Collect enough docs to show 5 pages
-        TopDocs results = searcher.search(query, 50); // get atmost 50 results
+        TopDocs results = searcher.search(query, 100); // get atmost 100 results
         ScoreDoc[] hits = results.scoreDocs;
 
         int numTotalHits = results.totalHits;

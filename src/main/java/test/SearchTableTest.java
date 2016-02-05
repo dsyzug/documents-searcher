@@ -1,11 +1,17 @@
 package test;
 
-import java.awt.*;
+
+import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.*;
+
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 public class SearchTableTest extends JFrame {
 
@@ -54,7 +60,7 @@ public class SearchTableTest extends JFrame {
         searchTableModel = new SearchTableModel();
         jTable = new JTable(searchTableModel);
         JScrollPane jsp = new JScrollPane(jTable);
-        pane.add(jsp,BorderLayout.SOUTH);
+        pane.add(jsp,BorderLayout.CENTER);
     }
     
     private void doSearch() throws Exception {
