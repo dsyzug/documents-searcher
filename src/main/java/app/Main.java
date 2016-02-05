@@ -26,18 +26,14 @@ public class Main extends JFrame {
 
     private final JTable jTable;
     private final FileSearchModel searchTableModel;
-    
     private final JTextField searchField;
-    
-    private static final int LAYOUT_WIDTH = 1600;
-    private static final int LAYOUT_HEIGHT = 400;
 
     public static void main(String[] args) throws Exception {
         Main stt = new Main();
         stt.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //stt.setSize(LAYOUT_WIDTH, LAYOUT_HEIGHT);
         stt.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        
+
         stt.setVisible(true);
     }
 
@@ -46,19 +42,19 @@ public class Main extends JFrame {
         pane.setLayout(new BorderLayout());
         searchField = new JTextField();
         setSearchFieldProperties();
-        
+
         searchTableModel = new FileSearchModel();
         jTable = new JTable(searchTableModel);
         setJTableProperties();
-        
+
         pane.add(searchField, BorderLayout.NORTH);
-        pane.add(new JScrollPane(jTable),BorderLayout.CENTER);
+        pane.add(new JScrollPane(jTable), BorderLayout.CENTER);
     }
-    
+
     private void doSearch() throws Exception {
         searchTableModel.updateDocsList(searchField.getText());
         searchTableModel.fireTableDataChanged();
-    } 
+    }
 
     private void setSearchFieldProperties() {
         searchField.setToolTipText("Search Anything");
@@ -71,7 +67,7 @@ public class Main extends JFrame {
                     doSearch();
                 } catch (Exception ex) {
                     Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                }     
+                }
             }
 
             @Override
@@ -87,6 +83,13 @@ public class Main extends JFrame {
     }
 
     private void setJTableProperties() {
+        // set column widths
+        Dimension dim = getMaximumSize();
+        jTable.getColumnModel().getColumn(0).setPreferredWidth((int) (dim.width * 0.3));
+        jTable.getColumnModel().getColumn(1).setPreferredWidth((int) (dim.width * 0.6));
+        jTable.getColumnModel().getColumn(2).setPreferredWidth((int) (dim.width * 0.1));
+
+        // detect double click on table row and open file identified by file path
         jTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent me) {
@@ -94,22 +97,15 @@ public class Main extends JFrame {
                 Point p = me.getPoint();
                 int row = table.rowAtPoint(p);
                 if (me.getClickCount() == 2) {
-                    
-                    System.out.println("val" +table.getValueAt(row, 1));
+                    System.out.println("val" + table.getValueAt(row, 1));
                     try {
-                        Desktop.getDesktop().open(new File(table.getValueAt(row, 1).toString()         ));
+                        Desktop.getDesktop().open(new File(table.getValueAt(row, 1).toString()));
                     } catch (IOException ex) {
                         Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
         });
-        
-        Dimension dim = getMaximumSize();
-        
-        jTable.getColumnModel().getColumn(0).setPreferredWidth((int) (dim.width * 0.3));
-        jTable.getColumnModel().getColumn(1).setPreferredWidth((int) (dim.width * 0.6));
-        jTable.getColumnModel().getColumn(2).setPreferredWidth((int) (dim.width * 0.1));
     }
 
 }
