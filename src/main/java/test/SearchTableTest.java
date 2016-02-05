@@ -1,6 +1,10 @@
 package test;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -10,8 +14,6 @@ public class SearchTableTest extends JFrame {
     private final JTable table;
     private final SearchTableModel searchTableModel;
     
-    // Variables declaration - do not modify                     
-    private final javax.swing.JButton searchButton;
     private final javax.swing.JTextField searchField;
 
     public static void main(String[] args) throws Exception {
@@ -28,23 +30,29 @@ public class SearchTableTest extends JFrame {
         searchField = new javax.swing.JTextField();
         searchField.setToolTipText("Search Anything");
         searchField.setHorizontalAlignment(JTextField.LEFT);
-        
-        searchButton = new javax.swing.JButton();
-        searchButton.setText("Search");
-        searchButton.setHorizontalAlignment(SwingConstants.RIGHT);
-        searchButton.addActionListener(new java.awt.event.ActionListener() {
+        searchField.addKeyListener(new KeyListener() {
+
             @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            public void keyReleased(KeyEvent e) {
                 try {
-                    doSearch(evt);
+                    doSearch();
                 } catch (Exception ex) {
                     Logger.getLogger(SearchTableTest.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                }     
+            }
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
             }
         });
         
         pane.add(searchField, BorderLayout.NORTH);
-        pane.add(searchButton, BorderLayout.EAST);
         
         searchTableModel = new SearchTableModel();
         table = new JTable(searchTableModel);
@@ -52,7 +60,7 @@ public class SearchTableTest extends JFrame {
         pane.add(jsp,BorderLayout.SOUTH);
     }
     
-    private void doSearch(java.awt.event.ActionEvent evt) throws Exception {
+    private void doSearch() throws Exception {
         searchTableModel.updateDocsList(searchField.getText());
         searchTableModel.fireTableDataChanged();
     } 
