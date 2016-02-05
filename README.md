@@ -5,3 +5,9 @@ to give everything search engine like behavior on Linux Machines.
 
 It can be used to create index of files within selected directories on your PC.  
 This index can later be used to quickly search any file by typing few characters in file name (including type).
+
+
+How to build:
+From command line execute the following:
+
+mvn clean compile assembly:single
