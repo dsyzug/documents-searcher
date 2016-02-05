@@ -4,6 +4,7 @@ import helpers.FileSearchModel;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
@@ -34,8 +35,8 @@ public class Main extends JFrame {
     public static void main(String[] args) throws Exception {
         Main stt = new Main();
         stt.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        stt.setSize(LAYOUT_WIDTH, LAYOUT_HEIGHT);
-        //stt.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        //stt.setSize(LAYOUT_WIDTH, LAYOUT_HEIGHT);
+        stt.setExtendedState(JFrame.MAXIMIZED_BOTH);
         
         stt.setVisible(true);
     }
@@ -104,8 +105,11 @@ public class Main extends JFrame {
             }
         });
         
-        jTable.getColumnModel().getColumn(0).setPreferredWidth((int) (LAYOUT_WIDTH * 0.3));
-        jTable.getColumnModel().getColumn(1).setPreferredWidth((int) (LAYOUT_WIDTH * 0.6));
+        Dimension dim = getMaximumSize();
+        
+        jTable.getColumnModel().getColumn(0).setPreferredWidth((int) (dim.width * 0.3));
+        jTable.getColumnModel().getColumn(1).setPreferredWidth((int) (dim.width * 0.6));
+        jTable.getColumnModel().getColumn(2).setPreferredWidth((int) (dim.width * 0.1));
     }
 
 }
