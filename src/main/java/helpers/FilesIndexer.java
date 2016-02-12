@@ -1,5 +1,6 @@
 package helpers;
 
+import app.Config;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -21,6 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.List;
 
 /**
  * Index all text files under a directory.
@@ -31,7 +33,15 @@ import java.nio.file.attribute.BasicFileAttributes;
 public class FilesIndexer {
     
     public static void main(String[] args) {
-        createOrUpdateIndex(SearchDoc.DEFAULT_DOCS_PATH, SearchDoc.DEFAULT_INDEX_PATH, true);
+        FilesIndexer.indexAllDocs();
+    }
+    
+    public static void indexAllDocs(){
+        Config config = new Config();
+        List<String> dirList = config.getDocsDirList();
+        for(String dirName : dirList){
+            createOrUpdateIndex(dirName, config.getIndexPath(), true);
+        }
     }
 
     public static boolean createOrUpdateIndex(String docsPath, String indexPath, boolean create) {

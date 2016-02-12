@@ -2,9 +2,6 @@ package helpers;
 
 public class SearchDoc {
     
-    public static final String DEFAULT_DOCS_PATH = "/home/dhirendra/Documents/googledrive/books";
-    public static final String DEFAULT_INDEX_PATH = "/home/dhirendra/workspace/learn/java/lucene/booksindex";
-    
     public static final String FIELD_STR_FILE_NAME = "filename";
     public static final String FIELD_STR_FILE_PATH = "filepath";
     public static final String FIELD_LONG_FILE_MODIFIED = "modified";

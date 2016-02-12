@@ -31,31 +31,35 @@ public class Application extends JFrame {
     public static void main(String[] args) throws Exception {
         Application app = new Application();
         app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //stt.setSize(LAYOUT_WIDTH, LAYOUT_HEIGHT);
+        //app.setSize(LAYOUT_WIDTH, LAYOUT_HEIGHT);
         app.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
+        //app.setSize(1200, 600);
         app.setVisible(true);
     }
 
+    /**
+     * Initialize UI Components
+     * @throws Exception 
+     */
     public Application() throws Exception {
         Container pane = getContentPane();
         pane.setLayout(new BorderLayout());
         searchField = new JTextField();
         setSearchFieldProperties();
+        pane.add(searchField, BorderLayout.NORTH);
 
         searchTableModel = new FileSearchModel();
+        if(searchTableModel == null){
+            System.err.println("searchTableModel is null");
+        }
         jTable = new JTable(searchTableModel);
         setJTableProperties();
-
-        pane.add(searchField, BorderLayout.NORTH);
         pane.add(new JScrollPane(jTable), BorderLayout.CENTER);
     }
 
-    private void doSearch() throws Exception {
-        searchTableModel.updateDocsList(searchField.getText());
-        searchTableModel.fireTableDataChanged();
-    }
-
+    /**
+     * add key listener on search text-box and trigger search on key release
+     */
     private void setSearchFieldProperties() {
         searchField.setToolTipText("Search Anything");
         searchField.setMargin(new Insets(5, 5, 5, 5));
@@ -82,6 +86,9 @@ public class Application extends JFrame {
         });
     }
 
+    /**
+     * Add double click listener to open file with default system application
+     */
     private void setJTableProperties() {
         // set column widths
         Dimension dim = getMaximumSize();
@@ -97,7 +104,6 @@ public class Application extends JFrame {
                 Point p = me.getPoint();
                 int row = table.rowAtPoint(p);
                 if (me.getClickCount() == 2) {
-                    System.out.println("val" + table.getValueAt(row, 1));
                     try {
                         Desktop.getDesktop().open(new File(table.getValueAt(row, 1).toString()));
                     } catch (IOException ex) {
@@ -106,6 +112,12 @@ public class Application extends JFrame {
                 }
             }
         });
+    }
+    
+    // Read text from search box and update table model.
+    private void doSearch() throws Exception {
+        searchTableModel.updateDocsList(searchField.getText());
+        searchTableModel.fireTableDataChanged();
     }
 
 }

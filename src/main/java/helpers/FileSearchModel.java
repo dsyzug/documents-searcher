@@ -13,9 +13,10 @@ public class FileSearchModel extends AbstractTableModel {
     private List<SearchDoc> searchDocs;
     private final FilesSearcher filesSearcher;
     
-    public FileSearchModel(){
+    public FileSearchModel() throws IOException{
         searchDocs = new ArrayList<>();
         filesSearcher = new FilesSearcher();
+        System.err.println("FileSearchModel Created...");
     }
     
     public void updateDocsList(String query) throws ParseException, IOException{

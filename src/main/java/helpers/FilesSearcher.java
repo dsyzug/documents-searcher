@@ -1,5 +1,6 @@
 package helpers;
 
+import app.Config;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -22,25 +23,18 @@ import org.apache.lucene.store.FSDirectory;
  */
 public class FilesSearcher {
     
-    private IndexReader reader;
-    private IndexSearcher indexSearcher;
-    private Analyzer analyzer;
-    private QueryParser queryParser;
+    private final IndexReader reader;
+    private final IndexSearcher indexSearcher;
+    private final Analyzer analyzer;
+    private final QueryParser queryParser;
+    private final Config config;
 
-    public FilesSearcher() {
-        initVars();
-    }
-    
-    private void initVars() {
-        try {
-            reader = DirectoryReader.open(FSDirectory.open(Paths.get(SearchDoc.DEFAULT_INDEX_PATH)));
-            indexSearcher = new IndexSearcher(reader);
-            analyzer = new StandardAnalyzer();
-            queryParser = new QueryParser(SearchDoc.FIELD_STR_FILE_NAME, analyzer);
-        } catch (Exception e) {
-            System.out.println(e.getStackTrace());
-        }
-
+    public FilesSearcher() throws IOException {
+        config = new Config();
+        reader = DirectoryReader.open(FSDirectory.open(Paths.get(config.getIndexPath())));
+        indexSearcher = new IndexSearcher(reader);
+        analyzer = new StandardAnalyzer();
+        queryParser = new QueryParser(SearchDoc.FIELD_STR_FILE_NAME, analyzer);
     }
     
     public List<SearchDoc> queryIndex(String line) {
