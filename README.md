@@ -1,14 +1,11 @@
-# searchmypc (work in progress)
+# Documents Searcher (work in progress)
 
-This is a Java Applications built using Java swing, awt, and Apache Lucene search library. Purpose of this application is
-to give everything search engine like behavior on Linux Machines.
+Documents Searcher is a Java Application built using Java 8 (Swing and AWT APIs), and Apache Lucene (v. 5.4.1) search library and can be used on Linux/Windows/Mac systems.
 
-It can be used to create index of files within selected directories on your PC.  
-This index can later be used to quickly search any file by typing few characters in file name (including type).
+Application facilitates indexing files within multipe directories on your computer. We can later quickly locate any file by typing just few characters in file name or file type or regex matching. 
 
 
-How to build:
+How to build from source:
 From command line execute the following:
-
 mvn package
 
